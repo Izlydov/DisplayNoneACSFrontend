@@ -1,7 +1,5 @@
 package ru.myitschool.work.core.components.employee;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.gson.JsonObject;
@@ -23,6 +21,7 @@ public class EmployeeAuthManager {
 
     public static boolean checkUserAuth(String login) {
         Request request = new Request.Builder().url(Constants.API_BASE + login + "/" + "auth" + "/").build();
+
         try (Response response = _client.newCall(request).execute()) {
             return response.isSuccessful();
         } catch (IOException e) {
@@ -30,7 +29,7 @@ public class EmployeeAuthManager {
         }
     }
 
-    public static Optional<Employee> getUserInfo(String login) {
+    public static Optional<Employee> getEmployeeInfo(String login) {
         Request request = new Request.Builder().url(Constants.API_BASE + login + "/" + "info" + "/").build();
 
         try (Response response = _client.newCall(request).execute()) {

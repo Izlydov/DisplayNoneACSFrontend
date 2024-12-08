@@ -11,9 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import ru.myitschool.work.R
 import ru.myitschool.work.databinding.FragmentLoginBinding
 import ru.myitschool.work.utils.collectWhenStarted
@@ -74,7 +71,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun onLoginButtonClicked(view: View) {
         val login = binding.username.text.toString()
-
         if (login.isEmpty()) return;
 
         Thread {
