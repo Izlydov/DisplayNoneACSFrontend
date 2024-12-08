@@ -1,5 +1,7 @@
 package ru.myitschool.work.core.components.employee;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.JsonObject;
@@ -20,7 +22,7 @@ public class EmployeeAuthManager {
     protected static final @NonNull OkHttpClient _client = ApiUtils.getOkHttpClient();
 
     public static boolean checkUserAuth(String login) {
-        Request request = new Request.Builder().url(Constants.API_BASE + "/" + login + "/").build();
+        Request request = new Request.Builder().url(Constants.API_BASE + login + "/" + "auth" + "/").build();
         try (Response response = _client.newCall(request).execute()) {
             return response.isSuccessful();
         } catch (IOException e) {
@@ -29,7 +31,7 @@ public class EmployeeAuthManager {
     }
 
     public static Optional<Employee> getUserInfo(String login) {
-        Request request = new Request.Builder().url(Constants.API_BASE + "/" + login + "/" + "info" + "/").build();
+        Request request = new Request.Builder().url(Constants.API_BASE + login + "/" + "info" + "/").build();
 
         try (Response response = _client.newCall(request).execute()) {
             if (!response.isSuccessful()) return Optional.empty();
@@ -49,7 +51,7 @@ public class EmployeeAuthManager {
         JsonObject body = new JsonObject();
         body.addProperty("value", code);
 
-        Request request = new Request.Builder().url(Constants.API_BASE + "/" + login + "/" + "open" + "/").patch(ApiUtils.createJsonRequestBody(body)).build();
+        Request request = new Request.Builder().url(Constants.API_BASE + login + "/" + "open" + "/").patch(ApiUtils.createJsonRequestBody(body)).build();
         try (Response response = _client.newCall(request).execute()) {
             return response.isSuccessful();
         } catch (IOException e) {
