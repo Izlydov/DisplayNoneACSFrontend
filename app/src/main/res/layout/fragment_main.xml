@@ -15,6 +15,7 @@
         android:id="@+id/photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:src="@drawable/ic_no_img"
         android:layout_gravity="center">
     </ImageView>
     <TextView
@@ -22,30 +23,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Должность пользователя"
-        android:textSize="18sp" />
+        android:textSize="18sp"/>
     <TextView
         android:id="@+id/lastEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Дата и время последнего входа"
         android:textSize="16sp"/>
-    <Button
+    <ImageButton
         android:id="@+id/logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Выйти"/>
-    <Button
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_logout"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+        
+    </ImageButton>
+    <ImageButton
         android:id="@+id/refresh"
-        android:layout_width="match_parent"
+        android:layout_gravity="center"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Обновить"
-        android:layout_marginTop="8dp" />
-    <Button
-        android:id="@+id/scan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Сканировать QR код"
-        android:layout_marginTop="8dp" />
+        android:src="@drawable/ic_refresh">
+        
+    </ImageButton>
+   <ImageButton
+       android:id="@+id/scan"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:src="@drawable/ic_qr_code"
+       android:layout_gravity="center"
+
+       ></ImageButton>
     <TextView
         android:id="@+id/error"
         android:layout_width="wrap_content"
