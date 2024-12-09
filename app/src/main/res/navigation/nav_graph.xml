@@ -39,5 +39,9 @@
     <fragment
         android:id="@+id/qrResultFragment"
         android:name="ru.myitschool.work.ui.qr.result.QrResultFragment"
-        android:label="QrResultFragment" />
+        android:label="QrResultFragment" >
+        <action
+            android:id="@+id/action_qrResultFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

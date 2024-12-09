@@ -1,13 +1,9 @@
 package ru.myitschool.work.ui.main
-import ru.myitschool.work.ui.main.MainViewModel
-
-
 
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -36,26 +32,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         login = sharedPreferences.getString("LOGIN", "no login").toString()
         refresh()
         initButtons()
-        if (QrScanDestination.REQUEST_KEY != "keq_qr") {
-            Log.w("NOONE1", QrScanDestination.REQUEST_KEY)
-        }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             QrScanDestination.REQUEST_KEY
         )
             ?.observe(viewLifecycleOwner) { bundle ->
                 val qrCode = bundle.getString("key_qr")
-                Log.i("test12", bundle.keySet().toString())
-                for (key in bundle.keySet()) {
-                    Log.i("test12", "Key: $key, Value: ${bundle.get(key)}")
-                }
 
                 if (qrCode != null) {
-                    Log.i("test12", qrCode)
                 }
                 if (!qrCode.isNullOrEmpty()) {
                     navigateToQrResultFragment(qrCode)
-                    Log.i("test12", "OKIQKONMJWDOWQO")
 
                 }
             }
@@ -84,13 +71,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun refresh() {
         Thread {
-            Log.i("ez", login)
             val employee = EmployeeAuthManager.getEmployeeInfo(login)
             requireActivity().runOnUiThread {
-                Log.i("ez", login)
                 updateUser(employee.get())
             }
-        }.start();
+        }.start()
     }
 
     override fun onAttach(context: Context) {
@@ -99,18 +84,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun updateUser(employee: Employee) {
-        binding.fullname.setText(employee.name)
-        binding.position.setText(employee.position)
-        binding.lastEntry.setText(
-            (SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(
-                employee.lastVisit
-            ))
-        )
+        binding.fullname.text = employee.name
+        binding.position.text = employee.position
+        binding.lastEntry.text = (SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(
+            employee.lastVisit
+        ))
     }
 
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
 }

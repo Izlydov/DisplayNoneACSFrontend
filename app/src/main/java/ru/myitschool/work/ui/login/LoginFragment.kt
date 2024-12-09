@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,9 +28,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val savedLogin = sharedPreferences.getString("LOGIN", "")
 
         if (!savedLogin.isNullOrEmpty()) {
-            //переход на гл экран
             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-            Log.w("test", savedLogin)
         }
         setupLoginButton()
         subscribe()
@@ -71,7 +68,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun onLoginButtonClicked(view: View) {
         val login = binding.username.text.toString()
-        if (login.isEmpty()) return;
+        if (login.isEmpty()) return
 
         Thread {
             val authResult = viewModel.checkUserAuth(login)

@@ -1,7 +1,7 @@
 package ru.myitschool.work.ui.qr.result
-import ru.myitschool.work.ui.qr.result.QrResultViewModel
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -9,11 +9,11 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
 import ru.myitschool.work.core.components.employee.EmployeeAuthManager
 import ru.myitschool.work.databinding.FragmentQrResultBinding
-import kotlin.math.log
 
 @AndroidEntryPoint
 class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
@@ -28,28 +28,33 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentQrResultBinding.bind(view)
         login = sharedPreferences.getString("LOGIN", "no login").toString()
-        Log.i("wtf", login)
-
+        binding.close.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_qrResultFragment_to_mainFragment)
+        }
         Thread {
             val result = getResult()
 
             requireActivity().runOnUiThread {
-                Log.i("es", result.toString())
-//                val message = if (!result) {
-//                    getString(R.string.cancel)
-//                } else {
-//                    if (result) {
-//                        getString(R.string.success)
-//                    } else {
-//                        getString(R.string.wrong)
-//                    }
-//                }
-//                setResult(message)
+                val message = if (!result) {
+                    getString(R.string.cancel)
+                } else {
+                    if (result) {
+                        getString(R.string.success)
+                    } else {
+                        getString(R.string.wrong)
+                    }
+                }
+                setResult(message)
             }
         }.start()
+
     }
 
-    private fun getQrCode(): String? {
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+
+    }
+    private fun getQrCode(): String {
         return arguments?.getString("qrCode") ?: "No QR Code Provided"
     }
 
@@ -70,7 +75,7 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
     }
 
     private fun setResult(result: String) {
-        binding.result.setText(result)
+        binding.result.text = result
     }
 
     override fun onDestroyView() {
