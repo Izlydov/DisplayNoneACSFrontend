@@ -14,6 +14,7 @@ import ru.myitschool.work.R
 import ru.myitschool.work.core.components.employee.EmployeeAuthManager
 import ru.myitschool.work.core.components.employee.models.Employee
 import ru.myitschool.work.databinding.FragmentMainBinding
+import ru.myitschool.work.ui.qr.scan.QrScanDestination
 import java.time.LocalDateTime
 
 @AndroidEntryPoint
@@ -29,8 +30,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
         login = sharedPreferences.getString("LOGIN", "no login").toString()
-//        refresh()
+        refresh()
         initButtons()
+        if (QrScanDestination.REQUEST_KEY != "keq_qr"){
+            Log.w("NOONE1", QrScanDestination.REQUEST_KEY)
+        }
     }
     private fun initButtons(){
         binding.logout.setOnClickListener { view ->
