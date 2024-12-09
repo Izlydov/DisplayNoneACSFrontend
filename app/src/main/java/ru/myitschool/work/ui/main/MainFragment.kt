@@ -15,7 +15,9 @@ import ru.myitschool.work.core.components.employee.EmployeeAuthManager
 import ru.myitschool.work.core.components.employee.models.Employee
 import ru.myitschool.work.databinding.FragmentMainBinding
 import ru.myitschool.work.ui.qr.scan.QrScanDestination
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -60,7 +62,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun updateUser(employee: Employee){
         binding.fullname.setText(employee.name)
         binding.position.setText(employee.position)
-        binding.lastEntry.setText(employee.lastVisit.toString())
+        binding.lastEntry.setText((SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(employee.lastVisit)))
     }
 
 

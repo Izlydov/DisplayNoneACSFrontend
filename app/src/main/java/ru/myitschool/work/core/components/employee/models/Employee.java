@@ -3,6 +3,7 @@ package ru.myitschool.work.core.components.employee.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Employee {
     @SerializedName("id")
@@ -21,9 +22,9 @@ public class Employee {
     private String position;
 
     @SerializedName("lastVisit")
-    private LocalDateTime lastVisit;
+    private Date lastVisit;
 
-    public Employee(long id, String login, String name, String photo, String position, LocalDateTime lastVisit) {
+    public Employee(long id, String login, String name, String photo, String position, Date lastVisit) {
         this.id = id;
         this.login = login;
         this.name = name;
@@ -72,11 +73,11 @@ public class Employee {
         this.position = position;
     }
 
-    public LocalDateTime getLastVisit() {
+    public Date getLastVisit() {
         return lastVisit;
     }
 
-    public void setLastVisit(LocalDateTime lastVisit) {
+    public void setLastVisit(Date lastVisit) {
         this.lastVisit = lastVisit;
     }
 }

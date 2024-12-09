@@ -1,5 +1,7 @@
 package ru.myitschool.work.core.components.employee;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.JsonObject;
@@ -33,6 +35,7 @@ public class EmployeeAuthManager {
         Request request = new Request.Builder().url(Constants.API_BASE + login + "/" + "info" + "/").build();
 
         try (Response response = _client.newCall(request).execute()) {
+            Log.i("AA", "CODE" + response.code());
             if (!response.isSuccessful()) return Optional.empty();
 
             ResponseBody responseBody = response.body();
@@ -59,6 +62,6 @@ public class EmployeeAuthManager {
     }
 
     public static Employee parseEmployee(String json) {
-        return JsonUtils.fromJsonWithNulls(json, Employee.class);
+        return JsonUtils.getGson().fromJson(json, Employee.class);
     }
 }
