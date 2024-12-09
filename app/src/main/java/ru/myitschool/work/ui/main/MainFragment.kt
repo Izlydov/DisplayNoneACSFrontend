@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
+import ru.myitschool.work.core.components.employee.EmployeeAuthManager
+import ru.myitschool.work.core.components.employee.models.Employee
 import ru.myitschool.work.databinding.FragmentMainBinding
 import java.time.LocalDateTime
 
@@ -19,16 +21,21 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private var _binding: FragmentMainBinding? = null
     private val binding: FragmentMainBinding get() = _binding!!
     private lateinit var sharedPreferences: SharedPreferences
+    private var login: String = ""
 
     private val viewModel: MainViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
+        login = sharedPreferences.getString("LOGIN", "no login").toString()
+//        refresh()
+        initButtons()
+    }
+    private fun initButtons(){
         binding.logout.setOnClickListener { view ->
             sharedPreferences.edit().clear().apply()
             findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-
         }
         binding.refresh.setOnClickListener { view ->
             refresh()
@@ -36,20 +43,20 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding.scan.setOnClickListener{ view ->
             findNavController().navigate(R.id.action_mainFragment_to_qrScanFragment)
         }
-
     }
     private fun refresh(){
-//обновить данные
+        val employee = EmployeeAuthManager.getEmployeeInfo(login)
+        updateUser(employee.get())
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         sharedPreferences = requireActivity().getSharedPreferences("LOGIN", Context.MODE_PRIVATE)
     }
-    private fun updateUser(fullname: String, position: String, lastEntry: LocalDateTime){
-        binding.fullname.setText(fullname)
-        binding.position.setText(position)
-        binding.lastEntry.setText(lastEntry.toString())
+    private fun updateUser(employee: Employee){
+        binding.fullname.setText(employee.name)
+        binding.position.setText(employee.position)
+        binding.lastEntry.setText(employee.lastVisit.toString())
     }
 
 

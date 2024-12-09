@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">NTO Pass</string>
     <string name="login">Login</string>
+    <string name="loginbutton">Log in</string>
+    <string name="cancel">Operation was cancelled</string>
+    <string name="success">Success</string>
+    <string name="wrong">Something wrong</string>
 </resources>

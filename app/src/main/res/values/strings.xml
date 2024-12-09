@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">NTO Pass</string>
     <string name="login">Логин</string>
+    <string name="loginbutton">Войти</string>
+    <string name="cancel">Вход был отменён</string>
+    <string name="success">Успешно</string>
+    <string name="wrong">Что-то пошло не так</string>
+
 </resources>
