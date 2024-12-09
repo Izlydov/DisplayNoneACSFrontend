@@ -21,9 +21,6 @@
         android:id="@+id/qrScanFragment"
         android:name="ru.myitschool.work.ui.qr.scan.QrScanFragment"
         android:label="QrScanFragment" >
-        <action
-            android:id="@+id/action_qrScanFragment_to_qrResultFragment"
-            app:destination="@id/qrResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -35,6 +32,9 @@
         <action
             android:id="@+id/action_mainFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_qrResultFragment"
+            app:destination="@id/qrResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/qrResultFragment"

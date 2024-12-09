@@ -1,8 +1,7 @@
 package ru.myitschool.work.ui.qr.result
+import ru.myitschool.work.ui.qr.result.QrResultViewModel
 
 
-
-import android.content.Context.MODE_PRIVATE
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,13 +9,11 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
 import ru.myitschool.work.core.components.employee.EmployeeAuthManager
 import ru.myitschool.work.databinding.FragmentQrResultBinding
-import ru.myitschool.work.ui.qr.scan.QrScanDestination
-import java.time.LocalDateTime
+import kotlin.math.log
 
 @AndroidEntryPoint
 class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
@@ -31,46 +28,51 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentQrResultBinding.bind(view)
         login = sharedPreferences.getString("LOGIN", "no login").toString()
-        val result = getResult()
-        val message = if (result == null || result == false) {
-            getString(R.string.cancel)
-        } else {
-            if (result) {
-                getString(R.string.success)
-            } else {
-                getString(R.string.wrong)
+        Log.i("wtf", login)
+
+        Thread {
+            val result = getResult()
+
+            requireActivity().runOnUiThread {
+                Log.i("es", result.toString())
+//                val message = if (!result) {
+//                    getString(R.string.cancel)
+//                } else {
+//                    if (result) {
+//                        getString(R.string.success)
+//                    } else {
+//                        getString(R.string.wrong)
+//                    }
+//                }
+//                setResult(message)
             }
-        }
-        setResult(message)
-    }
-    private fun getQrCode(): String? {
-        return findNavController()
-            .currentBackStackEntry
-            ?.savedStateHandle
-            ?.get<Bundle>(QrScanDestination.REQUEST_KEY)
-            ?.let { bundle ->
-                QrScanDestination.getDataIfExist(bundle)
-            }
+        }.start()
     }
 
+    private fun getQrCode(): String? {
+        return arguments?.getString("qrCode") ?: "No QR Code Provided"
+    }
 
     private fun getResult(): Boolean {
-//как-то брать code из QrScanDestination в QrScanFragment
-        Log.w("test", "code")
-
         val code = getQrCode()
         Log.w("test", code!!)
-        val result = EmployeeAuthManager.openDoor(login, code!!.toLong()) // what is code
+        Log.w("test", login)
+
+
+        val result = EmployeeAuthManager.openDoor(login, code.toLong())
         return result
+
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         sharedPreferences = requireActivity().getSharedPreferences("LOGIN", Context.MODE_PRIVATE)
     }
 
-    private fun setResult(result: String){
+    private fun setResult(result: String) {
         binding.result.setText(result)
     }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
