@@ -63,6 +63,6 @@ public class EmployeeAuthManager {
     }
 
     public static Employee parseEmployee(String json) {
-        return JsonUtils.fromJsonWithNulls(json, Employee.class);
+        return JsonUtils.getGson().fromJson(json, Employee.class);
     }
 }

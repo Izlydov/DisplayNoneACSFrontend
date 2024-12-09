@@ -3,11 +3,9 @@ package ru.myitschool.work.ui.main
 import android.content.Context.MODE_PRIVATE
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,7 +17,6 @@ import ru.myitschool.work.databinding.FragmentMainBinding
 import ru.myitschool.work.ui.qr.scan.QrScanDestination
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -66,13 +63,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onAttach(context)
         sharedPreferences = requireActivity().getSharedPreferences("LOGIN", Context.MODE_PRIVATE)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateUser(employee: Employee){
         binding.fullname.setText(employee.name)
         binding.position.setText(employee.position)
-//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         binding.lastEntry.setText((SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(employee.lastVisit)))
-//        binding.lastEntry.setText(employee.lastVisit.toString())
     }
 
 
