@@ -3,6 +3,8 @@ package ru.myitschool.work.ui.main
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -32,14 +34,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         login = sharedPreferences.getString("LOGIN", "no login").toString()
         refresh()
         initButtons()
+        waitForQRScanResult()
+    }
 
+    private fun waitForQRScanResult() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             QrScanDestination.REQUEST_KEY
-        )
-            ?.observe(viewLifecycleOwner) { bundle ->
-                val qrCode = bundle.getString("key_qr")
-                if (!qrCode.isNullOrEmpty()) navigateToQrResultFragment(qrCode)
-            }
+        )?.observe(viewLifecycleOwner) { bundle ->
+            val qrCode = bundle.getString("key_qr")
+            if (!qrCode.isNullOrEmpty()) navigateToQrResultFragment(qrCode)
+        }
     }
 
     private fun navigateToQrResultFragment(qrCode: String) {
@@ -83,6 +87,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding.lastEntry.text = (SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(
             employee.lastVisit
         ))
+        this.setUserImage(employee.photo)
     }
 
+    private fun setUserImage(url: String) {
+        Thread {
+            var image: Bitmap? = null
+
+            try {
+                val img = java.net.URL(url).openStream()
+                image = BitmapFactory.decodeStream(img)
+
+                requireActivity().runOnUiThread {
+                    binding.photo.setImageBitmap(image)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }.start()
+    }
 }
