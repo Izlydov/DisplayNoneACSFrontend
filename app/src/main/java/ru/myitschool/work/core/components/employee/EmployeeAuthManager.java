@@ -14,21 +14,19 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import ru.myitschool.work.core.ApiUtils;
-import ru.myitschool.work.core.Constants;
+import ru.myitschool.work.core.Config;
 import ru.myitschool.work.core.JsonUtils;
 import ru.myitschool.work.core.components.employee.models.Employee;
 
 public class EmployeeAuthManager {
-    public static final String API_BASE = Constants.SERVER_ADDRESS + "/api/";
+    public static final String API_BASE = Config.SERVER_ADDRESS + "/api/";
     private static final @NonNull OkHttpClient _client = ApiUtils.getOkHttpClient();
 
-    public static boolean checkUserAuth(String login) {
+    public static boolean checkUserAuth(String login) throws IOException {
         Request request = new Request.Builder().url(API_BASE + login + "/" + "auth").build();
 
         try (Response response = _client.newCall(request).execute()) {
             return response.isSuccessful();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -47,19 +45,17 @@ public class EmployeeAuthManager {
 
             return Optional.of(parseEmployee(body));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return Optional.empty();
         }
     }
 
-    public static boolean openDoor(String login, long code) {
+    public static boolean openDoor(String login, long code) throws IOException {
         JsonObject body = new JsonObject();
         body.addProperty("value", code);
 
         Request request = new Request.Builder().url(API_BASE + login + "/" + "open").patch(ApiUtils.createJsonRequestBody(body)).build();
         try (Response response = _client.newCall(request).execute()) {
             return response.isSuccessful();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

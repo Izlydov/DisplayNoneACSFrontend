@@ -41,11 +41,9 @@
     <ImageButton
         android:id="@+id/refresh"
         android:layout_gravity="center"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_refresh">
-        
     </ImageButton>
    <ImageButton
        android:id="@+id/scan"
@@ -53,7 +51,6 @@
        android:layout_height="wrap_content"
        android:src="@drawable/ic_qr_code"
        android:layout_gravity="center"
-
        ></ImageButton>
     <TextView
         android:id="@+id/error"
