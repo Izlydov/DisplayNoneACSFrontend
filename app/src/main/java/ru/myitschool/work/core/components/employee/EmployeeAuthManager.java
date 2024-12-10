@@ -14,12 +14,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import ru.myitschool.work.core.ApiUtils;
-import ru.myitschool.work.core.Constants;
 import ru.myitschool.work.core.JsonUtils;
 import ru.myitschool.work.core.components.employee.models.Employee;
 
 public class EmployeeAuthManager {
-    public static final String API_BASE = Constants.SERVER_ADDRESS + "/api/";
+    public static final String API_BASE = "http://185.250.46.64:8080" + "/api/";
     private static final @NonNull OkHttpClient _client = ApiUtils.getOkHttpClient();
 
     public static boolean checkUserAuth(String login) {

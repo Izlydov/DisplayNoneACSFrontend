@@ -21,17 +21,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
+    private var savedLogin: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
-        val savedLogin = sharedPreferences.getString("LOGIN", "")
+        savedLogin = sharedPreferences.getString("LOGIN", "") ?: ""
 
-        if (!savedLogin.isNullOrEmpty()) {
-            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-        }
+        if (this.isAuthorized()) findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
         setupLoginButton()
         subscribe()
+    }
+
+    private fun isAuthorized(): Boolean {
+        return savedLogin.isNotEmpty()
     }
 
     private fun setupLoginButton() {
@@ -74,18 +77,17 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val authResult = viewModel.checkUserAuth(login)
 
             requireActivity().runOnUiThread {
-                if (authResult) {
-                    viewModel.saveUserLogin(login, sharedPreferences)
-                    findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                } else {
-                    binding.error.visibility = View.VISIBLE
-                }
+                if (authResult) processAuthSuccess(login) else processAuthError()
             }
         }.start()
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+    private fun processAuthSuccess(login: String) {
+        viewModel.saveUserLogin(login, sharedPreferences)
+        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+    }
+
+    private fun processAuthError() {
+        binding.error.visibility = View.VISIBLE
     }
 }

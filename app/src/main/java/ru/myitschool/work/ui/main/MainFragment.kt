@@ -38,13 +38,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         )
             ?.observe(viewLifecycleOwner) { bundle ->
                 val qrCode = bundle.getString("key_qr")
-
-                if (qrCode != null) {
-                }
-                if (!qrCode.isNullOrEmpty()) {
-                    navigateToQrResultFragment(qrCode)
-
-                }
+                if (!qrCode.isNullOrEmpty()) navigateToQrResultFragment(qrCode)
             }
     }
 
