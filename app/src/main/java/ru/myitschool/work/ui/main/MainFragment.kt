@@ -7,9 +7,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.transition.Visibility
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
 import ru.myitschool.work.core.components.employee.EmployeeAuthManager
@@ -32,6 +34,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
         login = sharedPreferences.getString("LOGIN", "no login").toString()
+
         refresh()
         initButtons()
         waitForQRScanResult()
@@ -71,9 +74,45 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         Thread {
             val employee = EmployeeAuthManager.getEmployeeInfo(login)
             requireActivity().runOnUiThread {
-                updateUser(employee.get())
+                if (!employee.isEmpty) processLoadEmployeeSuccess(employee.get()) else processLoadEmployeeError()
             }
         }.start()
+    }
+
+    private fun setGlobalVisibility(visibility: Int) {
+        val root = binding.root as ViewGroup
+        for (i in 0 until root.childCount) {
+            val child = root.getChildAt(i)
+            child.visibility = visibility
+        }
+    }
+
+    private fun showAll() {
+        setGlobalVisibility(View.VISIBLE)
+    }
+
+    private fun hideAll() {
+        setGlobalVisibility(View.GONE)
+    }
+
+    private fun showError() {
+        binding.error.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        binding.error.visibility = View.GONE
+    }
+
+    private fun processLoadEmployeeError() {
+        hideAll()
+        showError()
+        binding.refresh.visibility = View.VISIBLE
+    }
+
+    private fun processLoadEmployeeSuccess(employee: Employee) {
+        showAll()
+        hideError()
+        updateUser(employee)
     }
 
     override fun onAttach(context: Context) {
@@ -84,9 +123,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun updateUser(employee: Employee) {
         binding.fullname.text = employee.name
         binding.position.text = employee.position
-        binding.lastEntry.text = (SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).format(
-            employee.lastVisit
-        ))
+        binding.lastEntry.text = (SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(employee.lastVisit))
         this.setUserImage(employee.photo)
     }
 

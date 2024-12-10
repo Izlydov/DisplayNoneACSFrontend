@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import okio.IOException
 import ru.myitschool.work.R
 import ru.myitschool.work.databinding.FragmentLoginBinding
 import ru.myitschool.work.utils.collectWhenStarted
@@ -74,10 +75,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (login.isEmpty()) return
 
         Thread {
-            val authResult = viewModel.checkUserAuth(login)
+            try {
+                val authResult = viewModel.checkUserAuth(login)
 
-            requireActivity().runOnUiThread {
-                if (authResult) processAuthSuccess(login) else processAuthError()
+                requireActivity().runOnUiThread {
+                    if (authResult) processAuthSuccess(login) else processAuthError()
+                }
+            } catch (_: IOException) {
+                processAuthError()
             }
         }.start()
     }
