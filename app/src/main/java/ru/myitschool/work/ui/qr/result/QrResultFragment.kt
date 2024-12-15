@@ -32,8 +32,20 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
     }
 
     private fun openDoor() {
+        val qrCodeValueLong: Long
+
+        try {
+            qrCodeValueLong = getQrCode().toLong()
+        } catch (exception: Exception) {
+            when (exception) {
+                is NumberFormatException, is IllegalArgumentException -> setResult(getString(R.string.wrong))
+                else -> throw exception
+            }
+            return
+        }
+
         Thread {
-            val result = viewModel.openDoor(login, getQrCode())
+            val result = viewModel.openDoor(login, qrCodeValueLong)
 
             requireActivity().runOnUiThread {
                 if (result == 200) {
