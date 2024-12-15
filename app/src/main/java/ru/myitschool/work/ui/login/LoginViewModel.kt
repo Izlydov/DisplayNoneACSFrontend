@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun checkUserAuth(login: String): Boolean {
-        return EmployeeAuthManager.checkUserAuth(login)
+        return EmployeeAuthManager.checkEmployeeAuth(login)
     }
 
     fun saveUserLogin(login: String, sharedPreferences: SharedPreferences) {

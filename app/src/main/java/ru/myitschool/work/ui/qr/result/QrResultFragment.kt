@@ -36,7 +36,13 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
             val result = viewModel.openDoor(login, getQrCode())
 
             requireActivity().runOnUiThread {
-                setResult(if (result) getString(R.string.success) else getString(R.string.wrong))
+                if (result == 200) {
+                    setResult(getString(R.string.success))
+                } else if (result == 400) {
+                    setResult(getString(R.string.wrong))
+                } else if (result == 401) {
+                    setResult(getString(R.string.cancel))
+                }
             }
         }.start()
     }
