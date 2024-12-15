@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -26,16 +27,31 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
 
         _binding = FragmentQrResultBinding.bind(view)
         login = sharedPreferences.getString("LOGIN", "no login").toString()
-        binding.close.setOnClickListener(this::closeQrScanFragment)
+        binding.close.setOnClickListener { v -> this.closeResultFragment() }
 
         this.openDoor()
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    closeResultFragment()
+                }
+            }
+        )
     }
 
     private fun openDoor() {
+        val qrCodeValue: String? = getQrCodeOrNull()
+        if (qrCodeValue == null || qrCodeValue == "Отмена") {
+            setResult(getString(R.string.cancel))
+            return
+        }
+
         val qrCodeValueLong: Long
 
         try {
-            qrCodeValueLong = getQrCode().toLong()
+            qrCodeValueLong = qrCodeValue.toLong()
         } catch (exception: Exception) {
             when (exception) {
                 is NumberFormatException, is IllegalArgumentException -> setResult(getString(R.string.wrong))
@@ -48,22 +64,16 @@ class QrResultFragment : Fragment(R.layout.fragment_qr_result) {
             val result = viewModel.openDoor(login, qrCodeValueLong)
 
             requireActivity().runOnUiThread {
-                if (result == 200) {
-                    setResult(getString(R.string.success))
-                } else if (result == 400) {
-                    setResult(getString(R.string.wrong))
-                } else if (result == 401) {
-                    setResult(getString(R.string.cancel))
-                }
+                if (result == 200) setResult(getString(R.string.success)) else setResult(getString(R.string.wrong))
             }
         }.start()
     }
 
-    private fun getQrCode(): String {
-        return arguments?.getString("qrCode") ?: "No QR Code Provided"
+    private fun getQrCodeOrNull(): String? {
+        return arguments?.getString("qrCode")
     }
 
-    private fun closeQrScanFragment(view: View) {
+    private fun closeResultFragment() {
         findNavController().navigate(R.id.action_qrResultFragment_to_mainFragment)
     }
 
