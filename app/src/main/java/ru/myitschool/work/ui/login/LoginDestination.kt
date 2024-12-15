@@ -4,5 +4,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object LoginDestination {
-    const val route = "loginFragment"
 }

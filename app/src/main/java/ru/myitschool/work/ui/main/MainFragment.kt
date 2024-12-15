@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
@@ -33,12 +34,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
-        login = sharedPreferences.getString("LOGIN", "no login").toString()
+        login = sharedPreferences.getString("LOGIN", "").toString()
+        if (!this.isAuthorized()) {
+            findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+            return
+        }
 
         refresh()
         initButtons()
 
         waitForQRScanResult()
+    }
+    private fun isAuthorized(): Boolean {
+        return login.isNotEmpty()
     }
 
     private fun waitForQRScanResult() {

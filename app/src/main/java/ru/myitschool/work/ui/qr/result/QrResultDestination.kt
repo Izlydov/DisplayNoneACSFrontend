@@ -4,5 +4,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object QrResultDestination {
-    const val route = "qrResultFragment"
 }

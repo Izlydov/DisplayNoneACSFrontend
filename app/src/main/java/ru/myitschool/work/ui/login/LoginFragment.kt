@@ -29,7 +29,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         _binding = FragmentLoginBinding.bind(view)
         savedLogin = sharedPreferences.getString("LOGIN", "") ?: ""
 
-        if (this.isAuthorized()) findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+//        if (this.isAuthorized()) findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+//        if (!this.isAuthorized()) findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
         setupLoginButton()
         subscribe()
     }
