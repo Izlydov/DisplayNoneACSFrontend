@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+=======
+import androidx.activity.OnBackPressedCallback
+
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -37,10 +40,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         refresh()
         initButtons()
+
         waitForQRScanResult()
     }
 
     private fun waitForQRScanResult() {
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        })
+
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             QrScanDestination.REQUEST_KEY
         )?.observe(viewLifecycleOwner) { bundle ->

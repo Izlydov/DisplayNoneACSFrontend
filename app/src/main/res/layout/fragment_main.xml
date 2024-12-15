@@ -30,28 +30,45 @@
         android:layout_height="wrap_content"
         android:text="Дата и время последнего входа"
         android:textSize="16sp"/>
-    <ImageButton
+    <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:src="@drawable/ic_logout"
+        android:text="Logout"
         android:layout_gravity="center"
         android:layout_height="wrap_content">
         
-    </ImageButton>
-    <ImageButton
+    </Button>
+    <Button
         android:id="@+id/refresh"
         android:layout_gravity="center"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_refresh">
     </ImageButton>
    <ImageButton
+
+        android:text="Refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_refresh">
+        
+    </Button>
+   <Button
+
        android:id="@+id/scan"
+       android:text="Scan"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:src="@drawable/ic_qr_code"
        android:layout_gravity="center"
+
        ></ImageButton>
+
+
+       ></Button>
+
     <TextView
         android:id="@+id/error"
         android:layout_width="wrap_content"
