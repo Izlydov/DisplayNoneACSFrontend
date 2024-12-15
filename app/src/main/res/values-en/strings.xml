@@ -6,4 +6,8 @@
     <string name="cancel">Operation was cancelled</string>
     <string name="success">Success</string>
     <string name="wrong">Something wrong</string>
+    <string name="error401">No login</string>
+    <string name="ok">OK</string>
+
+
 </resources>

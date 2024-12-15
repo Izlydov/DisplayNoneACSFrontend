@@ -5,5 +5,7 @@
     <string name="cancel">Вход был отменён</string>
     <string name="success">Успешно</string>
     <string name="wrong">Что-то пошло не так</string>
+    <string name="error401">Логина не существует или неверный</string>
+    <string name="ok">ОК</string>
 
 </resources>

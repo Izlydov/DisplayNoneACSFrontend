@@ -120,9 +120,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         showError()
 
         if (statusCode == 400) {
-            binding.error.text = "..."  // TODO
+            binding.error.text = getString(R.string.wrong)
         } else if (statusCode == 401) {
-            binding.error.text = "..."
+            binding.error.text = getString(R.string.error401)
+        } else if (statusCode == 200) {
+            binding.error.text = getString(R.string.ok)
         }
 
         binding.refresh.visibility = View.VISIBLE
