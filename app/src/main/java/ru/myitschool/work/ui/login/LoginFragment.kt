@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import okio.IOException
 import ru.myitschool.work.R
 import ru.myitschool.work.databinding.FragmentLoginBinding
 import ru.myitschool.work.utils.collectWhenStarted
@@ -21,17 +22,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
+    private var savedLogin: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
-        val savedLogin = sharedPreferences.getString("LOGIN", "")
+        savedLogin = sharedPreferences.getString("LOGIN", "") ?: ""
 
-        if (!savedLogin.isNullOrEmpty()) {
-            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-        }
+        if (this.isAuthorized()) findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
         setupLoginButton()
         subscribe()
+    }
+
+    private fun isAuthorized(): Boolean {
+        return savedLogin.isNotEmpty()
     }
 
     private fun setupLoginButton() {
@@ -71,21 +75,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (login.isEmpty()) return
 
         Thread {
-            val authResult = viewModel.checkUserAuth(login)
+            try {
+                val authResult = viewModel.checkUserAuth(login)
 
-            requireActivity().runOnUiThread {
-                if (authResult) {
-                    viewModel.saveUserLogin(login, sharedPreferences)
-                    findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                } else {
-                    binding.error.visibility = View.VISIBLE
+                requireActivity().runOnUiThread {
+                    if (authResult) processAuthSuccess(login) else processAuthError()
                 }
+            } catch (_: IOException) {
+                processAuthError()
             }
         }.start()
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+    private fun processAuthSuccess(login: String) {
+        viewModel.saveUserLogin(login, sharedPreferences)
+        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+    }
+
+    private fun processAuthError() {
+        binding.error.visibility = View.VISIBLE
     }
 }

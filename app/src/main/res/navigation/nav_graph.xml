@@ -17,11 +17,13 @@
         android:id="@+id/rootActivity"
         android:name="ru.myitschool.work.ui.RootActivity"
         android:label="RootActivity" />
+
     <fragment
         android:id="@+id/qrScanFragment"
         android:name="ru.myitschool.work.ui.qr.scan.QrScanFragment"
         android:label="QrScanFragment" >
     </fragment>
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="ru.myitschool.work.ui.main.MainFragment"
@@ -36,6 +38,7 @@
             android:id="@+id/action_mainFragment_to_qrResultFragment"
             app:destination="@id/qrResultFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/qrResultFragment"
         android:name="ru.myitschool.work.ui.qr.result.QrResultFragment"
