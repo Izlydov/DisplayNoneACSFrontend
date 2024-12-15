@@ -32,16 +32,6 @@ class RootActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
-//        if (navHostFragment != null) {
-//            val navController = navHostFragment.navController
-//            val navInflater = navController.navInflater
-//            val navGraph = navInflater.inflate(R.navigation.nav_graph)
-//            val startDestination = if (!savedLogin.isNullOrEmpty()) MainDestination else MainDestination
-//            Log.d("Navigation", "Setting start destination: $startDestination")
-//
-//            navGraph.setStartDestination(startDestination)
-//            navController.graph = navGraph
-//        }
 
 
         onBackPressedDispatcher.addCallback(
