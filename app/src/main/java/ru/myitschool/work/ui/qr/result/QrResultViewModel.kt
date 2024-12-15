@@ -17,7 +17,7 @@ class QrResultViewModel @Inject constructor(
     private val _state = MutableStateFlow(true)
     val state = _state.asStateFlow()
 
-    fun openDoor(login: String, code: String): Boolean {
+    fun openDoor(login: String, code: String): Int {
         return EmployeeAuthManager.openDoor(login, code.toLong())
     }
 }

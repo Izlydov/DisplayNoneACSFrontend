@@ -1,79 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
     <TextView
-        android:id="@+id/fullname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ФИО пользователя"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+            android:id="@+id/fullname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ФИО пользователя"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
     <ImageView
-        android:id="@+id/photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_no_img"
-        android:layout_gravity="center">
-    </ImageView>
-    <TextView
-        android:id="@+id/position"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Должность пользователя"
-        android:textSize="18sp"/>
-    <TextView
-        android:id="@+id/lastEntry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Дата и время последнего входа"
-        android:textSize="16sp"/>
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_logout"
-        android:text="Logout"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content">
-        
-    </Button>
-    <Button
-        android:id="@+id/refresh"
-        android:layout_gravity="center"
+            android:id="@+id/photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_no_img"
+            android:layout_gravity="center" />
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_refresh">
+    <TextView
+            android:id="@+id/position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Должность пользователя"
+            android:textSize="18sp" />
+
+    <TextView
+            android:id="@+id/lastEntry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата и время последнего входа"
+            android:textSize="16sp" />
+
+    <ImageButton
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_logout"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
     </ImageButton>
-   <ImageButton
 
-        android:text="Refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_refresh">
-        
-    </Button>
-   <Button
+    <ImageButton
+            android:id="@+id/refresh"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_refresh" />
 
-       android:id="@+id/scan"
-       android:text="Scan"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:src="@drawable/ic_qr_code"
-       android:layout_gravity="center"
-
-       ></ImageButton>
-
-
-       ></Button>
+    <ImageButton
+            android:id="@+id/scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_qr_code"
+            android:layout_gravity="center" />
 
     <TextView
-        android:id="@+id/error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ошибка. Попробуйте снова."
-        android:visibility="gone"
-        android:layout_marginTop="16dp" />
+            android:id="@+id/error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ошибка. Попробуйте снова."
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
 </LinearLayout>

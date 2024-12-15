@@ -8,13 +8,10 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-=======
 import androidx.activity.OnBackPressedCallback
-
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.transition.Visibility
 import dagger.hilt.android.AndroidEntryPoint
 import ru.myitschool.work.R
 import ru.myitschool.work.core.components.employee.EmployeeAuthManager
@@ -46,10 +43,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun waitForQRScanResult() {
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                }
+            })
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             QrScanDestination.REQUEST_KEY
@@ -82,9 +81,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun refresh() {
         Thread {
-            val employee = EmployeeAuthManager.getEmployeeInfo(login)
+            val response = EmployeeAuthManager.getEmployeeInfo(login)
+
             requireActivity().runOnUiThread {
-                if (!employee.isEmpty) processLoadEmployeeSuccess(employee.get()) else processLoadEmployeeError()
+                if (!response.second.isEmpty) processLoadEmployeeSuccess(response.second.get()) else processLoadEmployeeError(
+                    response.first
+                )
             }
         }.start()
     }
@@ -113,9 +115,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         binding.error.visibility = View.GONE
     }
 
-    private fun processLoadEmployeeError() {
+    private fun processLoadEmployeeError(statusCode: Int) {
         hideAll()
         showError()
+
+        if (statusCode == 400) {
+            binding.error.text = "..."  // TODO
+        } else if (statusCode == 401) {
+            binding.error.text = "..."
+        }
+
         binding.refresh.visibility = View.VISIBLE
     }
 
@@ -133,7 +142,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun updateUser(employee: Employee) {
         binding.fullname.text = employee.name
         binding.position.text = employee.position
-        binding.lastEntry.text = (SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(employee.lastVisit))
+        binding.lastEntry.text =
+            (SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(employee.lastVisit))
         this.setUserImage(employee.photo)
     }
 
